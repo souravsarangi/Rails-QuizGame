@@ -1,0 +1,33 @@
+<h1>Welcome to quiz</h1>
+
+
+		<h3>Hello <%= @user[0].email %></h3>
+	    <h3>Score: <%= @user[0].score %></h3>
+
+
+	<table>
+	<tr>
+        <td><%= @idea.name %></td>
+        <td><%= @idea.description %></td>
+    </tr>
+    <tr>
+        <td><%= image_tag(@idea.pic1_url, :width => 200) %>
+        </td>
+        <td><%= image_tag(@idea.pic2_url, :width => 200) %> </td>
+    </tr>
+    <tr>
+        <td><%= image_tag(@idea.pic3_url, :width => 200) %> </td>
+        <td><%= image_tag(@idea.pic4_url, :width => 200) %></td>
+    </tr>
+
+
+	</table>
+<br/>
+<%= form_tag(ideas_check_path,method: "get") do %>
+  <%= label_tag(:q, "Your Answer:") %>
+  <%= text_field_tag(:q) %>
+
+  <%= hidden_field_tag "id", @idea.id %>
+  <br/>
+  <%= submit_tag("Submit") %>
+<% end %>

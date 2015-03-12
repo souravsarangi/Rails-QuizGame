@@ -1,0 +1,11 @@
+<h1>GAME OVER</h1>
+<h3>Your Score: <%= @user.score %></h3>
+
+<%= form_tag(ideas_sendmail_path,method: "get") do %>
+  <%= label_tag(:email, "Your Friend's Email id:") %>
+  <%= text_field_tag(:email) %>
+
+  <%= hidden_field_tag "score", @user.score %>
+  <br/>
+  <%= submit_tag("Send") %>
+<% end %>

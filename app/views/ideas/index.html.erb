@@ -1,0 +1,77 @@
+<script>
+jQuery ->
+  $('body').prepend('<div id="fb-root"></div>')
+
+  $.ajax
+    url: "#{window.location.protocol}//connect.facebook.net/en_US/all.js"
+    dataType: 'script'
+    cache: true
+
+
+window.fbAsyncInit = ->
+  FB.init(appId: 'YOUR-APP-ID', cookie: true)
+
+  $('#sign_in').click (e) ->
+    e.preventDefault()
+    FB.login (response) ->
+      window.location = '/auth/facebook/callback' if response.authResponse
+
+  $('#sign_out').click (e) ->
+    FB.getLoginStatus (response) ->
+      FB.logout() if response.authResponse
+    true
+
+</script>
+
+
+
+<div id="user-widget">
+  <% #if current_user %>
+    Welcome <strong><%= current_user.name %></strong>!
+    <%= link_to "Sign out", signout_path, id: "sign_out" %>
+  <% else %>
+    <%= link_to "Sign in with Facebook", "/auth/facebook", id: "sign_in" %>
+  <% #end %>
+</div>
+
+
+
+<h1>Listing ideas</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Pic1</th>
+      <th>Pic2</th>
+      <th>Pic3</th>
+      <th>Pic4</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+     <% @ideas.each do |idea| %>
+      <tr>
+        <td><%= idea.name %></td>
+        <td><%= idea.description %></td>
+        <td><%= image_tag(idea.pic1_url, :width => 200) if idea.pic1.present? %></td>
+        <td><%= image_tag(idea.pic2_url, :width => 200) if idea.pic2.present? %></td>
+        <td><%= image_tag(idea.pic3_url, :width => 200) if idea.pic3.present? %></td>
+        <td><%= image_tag(idea.pic4_url, :width => 200) if idea.pic4.present? %></td>
+        <td><%= link_to 'Show', idea %></td>
+        <td><%= link_to 'Edit', edit_idea_path(idea) %></td>
+        <td><%= link_to 'Destroy', idea, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+     <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Idea', new_idea_path %>
+
+
+
+<%= link_to 'Take Quiz', ideas_quiz_path %>
